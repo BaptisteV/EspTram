@@ -7,7 +7,23 @@ Affiche le prochain tram de la station Foch Gare à Dijon sur un afficheur à se
 
 ## Fonctionnalité
 Toutes les secondes, récupère les horaires de l'API [DiviaApi](https://github.com/BaptisteV/DiviaApi). Affiche l'horaire du prochain tram sur l'afficheur à segments.
-L'API renvoi deux horaires. Si le tram est déjà passé, on affiche le prochain. On affiche des underscore quand le prochain tram est dans plus de 99 minutes (typiquement le soir).
+```json
+{
+    "horairesFoch" : [
+        {
+            "arrivesAt" : "2025-08-11T19:34:00",
+            "minutesLeft" : 1,
+            "secondsLeft": 1
+        },
+        {
+            "arrivesAt" : "2025-08-11T19:44:01",
+            "minutesLeft" : 11,
+            "secondsLeft" : 2
+        }
+    ]
+}
+```
+L'API renvoi deux horaires, avec minutesLeft et secondsLeft. Si le tram est déjà passé, on affiche le prochain. On affiche des underscore quand le prochain tram est dans plus de 99 minutes (typiquement le soir).
 
 ## Installation
 Créer le fichier ***src/Config.cpp***
@@ -24,7 +40,7 @@ Installer [PlateformIO](https://docs.platformio.org/en/latest/core/installation/
 plateformio run
 ```
 
-## Dépendences
+## Dépendances
 - [PlateformIO](https://platformio.org/) pour gérer le projet
 - [ArduinoJson](https://arduinojson.org/) pour désérialiser les réponses de l'API
 - [TM1637](https://registry.platformio.org/libraries/smougenot/TM1637) pour l'affichage
