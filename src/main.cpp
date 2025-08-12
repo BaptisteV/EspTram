@@ -11,9 +11,7 @@ static constexpr auto POLLING_INTERVAL = std::chrono::milliseconds{1000};
 static constexpr auto TIMEOUT = std::chrono::milliseconds{250};
 
 Debouncer apiDebouncer(POLLING_INTERVAL);
-
 FochApiClient apiClient(DIVIA_API_URL, TIMEOUT);
-
 TmDisplay tmDisplay;
 
 void setup()

@@ -10,7 +10,7 @@
 class FochApiClient
 {
 public:
-    FochApiClient(std::string url, std::chrono::milliseconds timeout)
+    FochApiClient(const std::string &url, const std::chrono::milliseconds &timeout)
     {
         httpClient = std::unique_ptr<HTTPClient>(new HTTPClient());
         httpClient->setReuse(true);
@@ -28,7 +28,7 @@ public:
             {
                 throw ApiClientTimeoutException("Request timed out");
             }
-            throw ApiClientException("Failed to fetch Foch response: %s", httpClient->errorToString(returnCode).c_str());
+            throw ApiClientException("Failed to fetch Foch response: %s", HTTPClient::errorToString(returnCode).c_str());
         }
 
         FochResponse::deserialize(httpClient->getString().c_str(), response);

@@ -15,7 +15,7 @@ public:
     FochResponse()
         : horairesFoch() {};
 
-    static void deserialize(std::string body, FochResponse &response)
+    static void deserialize(const std::string &body, FochResponse &response)
     {
         JsonDocument doc;
         DeserializationError error = deserializeJson(doc, body);
@@ -23,7 +23,7 @@ public:
         {
             throw JsonDeserializationException("Failed to deserialize JSON: %s", error.c_str());
         }
-        
+
         JsonObject obj = doc.as<JsonObject>();
         if (!obj["horairesFoch"].is<JsonArray>())
         {

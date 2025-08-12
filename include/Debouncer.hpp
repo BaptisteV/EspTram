@@ -8,7 +8,7 @@ private:
     std::chrono::microseconds interval;
 
 public:
-    Debouncer(std::chrono::milliseconds intervalMs)
+    Debouncer(const std::chrono::milliseconds &intervalMs)
         : lastTriggerTime(std::chrono::steady_clock::now() - intervalMs), interval(std::chrono::microseconds(intervalMs)) {}
 
     bool shouldTrigger()
