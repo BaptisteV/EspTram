@@ -1,3 +1,4 @@
+#pragma once
 #include <Arduino.h>
 #include <unity.h>
 #include <string>
@@ -25,7 +26,7 @@ std::string jsonOk = R"({
 ]
 })";
 
-void test_deserialize_ok()
+void test_client_deserialize_ok()
 {
     FochResponse response;
     FochResponse::deserialize(jsonOk, response);
@@ -38,13 +39,26 @@ void test_deserialize_ok()
     TEST_ASSERT_EQUAL_INT(response.horairesFoch[1].secondsLeft, tramFoch2.secondsLeft);
 }
 
-void setup()
+void deserialize_invalid_json(std::string body)
 {
-    UNITY_BEGIN();
-    RUN_TEST(test_deserialize_ok);
-    UNITY_END();
+    FochResponse response;
+    try
+    {
+        FochResponse::deserialize(body, response);
+        TEST_FAIL_MESSAGE("Expected JsonDeserializationException to be thrown");
+    }
+    catch (const JsonDeserializationException &e)
+    {
+        TEST_ASSERT_MESSAGE(true, "JsonDeserializationException was thrown");
+    }
 }
 
-void loop()
+void test_client_deserialize_empty_body()
 {
+    deserialize_invalid_json("");
+}
+
+void test_client_deserialize_empty_json()
+{
+    deserialize_invalid_json("{}");
 }

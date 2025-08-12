@@ -4,28 +4,28 @@
 class Debouncer
 {
 private:
-    unsigned long lastTriggerTime;
-    unsigned long intervalMs;
+    std::chrono::steady_clock::time_point lastTriggerTime;
+    std::chrono::microseconds interval;
 
 public:
-    Debouncer(unsigned long intervalMs)
-        : lastTriggerTime(0), intervalMs(intervalMs) {}
+    Debouncer(std::chrono::milliseconds intervalMs)
+        : lastTriggerTime(std::chrono::steady_clock::now() - intervalMs), interval(std::chrono::microseconds(intervalMs)) {}
 
     bool shouldTrigger()
     {
-        unsigned long currentTime = millis();
-        bool shouldUpdate = (currentTime - lastTriggerTime >= intervalMs);
+        auto now = std::chrono::steady_clock::now();
+        auto elapsed = now - lastTriggerTime;
+        bool shouldUpdate = elapsed >= interval;
 
         if (shouldUpdate)
         {
-            lastTriggerTime = currentTime;
+            lastTriggerTime = now;
         }
-
         return shouldUpdate;
     }
 
     void triggerNextTime()
     {
-        lastTriggerTime = millis() - intervalMs * 2; // Reset to ensure the next call will trigger immediately
+        lastTriggerTime = std::chrono::steady_clock::now() - interval;
     }
 };

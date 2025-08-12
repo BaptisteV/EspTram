@@ -1,14 +1,20 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <chrono>
 #include "TmDisplay.hpp"
 #include "FochApiClient.hpp"
 #include "exceptions/ApiClientTimeoutException.hpp"
 #include "Debouncer.hpp"
 #include "Config.cpp"
 
-FochApiClient apiClient(DIVIA_API_URL, 250);
+static constexpr auto POLLING_INTERVAL = std::chrono::milliseconds{1000};
+static constexpr auto TIMEOUT = std::chrono::milliseconds{250};
+
+Debouncer apiDebouncer(POLLING_INTERVAL);
+
+FochApiClient apiClient(DIVIA_API_URL, TIMEOUT);
+
 TmDisplay tmDisplay;
-Debouncer apiDebouncer(1000);
 
 void setup()
 {

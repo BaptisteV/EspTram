@@ -10,18 +10,18 @@
 class FochApiClient
 {
 public:
-    FochApiClient(std::string url, int timeoutInMs)
+    FochApiClient(std::string url, std::chrono::milliseconds timeout)
     {
         httpClient = std::unique_ptr<HTTPClient>(new HTTPClient());
         httpClient->setReuse(true);
-        httpClient->setTimeout(timeoutInMs);
+        httpClient->setTimeout(timeout.count());
         httpClient->begin(url.c_str());
     }
 
     void fetchFochResponse(FochResponse &response)
     {
         int returnCode = httpClient->GET();
-        if (returnCode <= 0)
+        if (returnCode < 0)
         {
             httpClient->end();
             if (returnCode == HTTPC_ERROR_READ_TIMEOUT)
